@@ -75,8 +75,12 @@ router.post('/image', authenticateToken, upload.single('image'), (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    // Return the URL path to access the uploaded image
-    const imageUrl = `http://localhost:5000/uploads/materials/${req.file.filename}`;
+    // Use production URL if available, otherwise construct from request headers
+    const baseUrl = process.env.RENDER_EXTERNAL_URL 
+      ? process.env.RENDER_EXTERNAL_URL 
+      : `${req.protocol}://${req.get('host')}`;
+      
+    const imageUrl = `${baseUrl}/uploads/materials/${req.file.filename}`;
     console.log('✅ Image uploaded successfully:', imageUrl);
     
     res.json({ 
