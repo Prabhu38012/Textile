@@ -22,7 +22,12 @@ export default function configurePassport() {
     }
   });
 
-  // Google OAuth Strategy
+  // Google OAuth Strategy — only configure if credentials are set
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    console.warn('⚠️  Google OAuth not configured (GOOGLE_CLIENT_ID/SECRET missing). Google login will be disabled.');
+    return;
+  }
+
   passport.use(
     new GoogleStrategy(
       {
