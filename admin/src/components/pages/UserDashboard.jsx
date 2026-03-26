@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import DashboardNav from './DashboardNav';
 import TamilChat from './TamilChat';
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 import './UserDashboard.css';
 
 const UserDashboard = () => {
@@ -29,7 +32,7 @@ const UserDashboard = () => {
         setRefreshing(true);
       }
       
-      const response = await fetch('http://localhost:5000/api/materials');
+      const response = await fetch(`${API}/api/materials`);
       const data = await response.json();
       console.log('Fetched materials:', data.materials?.length || 0, 'materials');
       if (data.materials) {

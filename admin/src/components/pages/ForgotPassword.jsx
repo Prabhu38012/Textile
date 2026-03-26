@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import s1 from "../../assets/sigin.jpg";
 import { useNavigate } from "react-router-dom";
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || `${API}`;
 
 export default function ForgotPassword() {
   const navigate = useNavigate();

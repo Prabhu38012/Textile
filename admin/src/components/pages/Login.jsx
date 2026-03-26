@@ -4,7 +4,7 @@ import s2 from "../../assets/sigin2.jpg";
 import s3 from "../../assets/sigin3.jpg";
 import s4 from "../../assets/sigin4.jpg";
 import { Link, useNavigate } from "react-router-dom";
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || `${API}`;
 export default function Login() {
   const [slide, setSlide] = useState(0);
   const images = [

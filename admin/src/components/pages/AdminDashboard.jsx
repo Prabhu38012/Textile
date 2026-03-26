@@ -29,6 +29,9 @@ import {
   Calendar
 } from 'lucide-react';
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+
 const AdminDashboard = () => {
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,7 +65,7 @@ const AdminDashboard = () => {
   const fetchMaterials = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/materials', {
+      const response = await fetch(`${API}/api/materials`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -82,7 +85,7 @@ const AdminDashboard = () => {
     setLoadingRequests(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/chat/all', {
+      const response = await fetch(`${API}/api/chat/all`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -164,7 +167,7 @@ const AdminDashboard = () => {
       formDataToSend.append('image', selectedFile);
 
       console.log('Uploading to: http://localhost:5000/api/upload/image');
-      const response = await fetch('http://localhost:5000/api/upload/image', {
+      const response = await fetch(`${API}/api/upload/image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -213,8 +216,8 @@ const AdminDashboard = () => {
       }
 
       const url = editingId 
-        ? `http://localhost:5000/api/materials/${editingId}`
-        : 'http://localhost:5000/api/materials';
+        ? `${API}/api/materials/${editingId}`
+        : `${API}/api/materials`;
       
       const method = editingId ? 'PUT' : 'POST';
 
@@ -279,7 +282,7 @@ const AdminDashboard = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/materials/${id}`, {
+      const response = await fetch(`${API}/api/materials/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

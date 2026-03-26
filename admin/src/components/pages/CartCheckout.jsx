@@ -15,7 +15,7 @@ import {
   ShoppingCart
 } from 'lucide-react'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API = import.meta.env.VITE_API_URL || `${API}`
 
 function loadRazorpay() {
   return new Promise((resolve) => {

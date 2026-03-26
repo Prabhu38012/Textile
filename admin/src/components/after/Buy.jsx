@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import p3 from "../../assets/photo3.jpg";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+
 export default function Buy() {
 	const [materials, setMaterials] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -15,7 +18,7 @@ export default function Buy() {
 
 	const fetchMaterials = async () => {
 		try {
-			const response = await fetch('http://localhost:5000/api/materials');
+			const response = await fetch(`${API}/api/materials`);
 			const data = await response.json();
 			console.log('Fetched materials for Buy Now:', data.materials?.length || 0);
 			if (data.materials) {

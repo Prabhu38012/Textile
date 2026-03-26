@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 import './DashboardNav.css';
 
 const DashboardNav = () => {
@@ -11,7 +14,7 @@ const DashboardNav = () => {
     const token = localStorage.getItem('token');
     if (token) {
       // Try to get user info
-      fetch('http://localhost:5000/api/auth/me', {
+      fetch(`${API}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
