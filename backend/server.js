@@ -83,22 +83,6 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, ts: Date.now() });
 });
 
-// Test endpoint to check upload directory
-app.get('/api/uploads/test', (req, res) => {
-  const fs = require('fs');
-  const uploadsPath = path.join(__dirname, 'uploads', 'materials');
-  try {
-    const files = fs.readdirSync(uploadsPath);
-    res.json({ 
-      ok: true, 
-      uploadsPath, 
-      files,
-      testImageUrl: files.length > 0 ? `http://localhost:5000/uploads/materials/${files[0]}` : null
-    });
-  } catch (err) {
-    res.json({ ok: false, error: err.message, uploadsPath });
-  }
-});
 
 app.use('/api/auth', authRouter);
 app.use('/api/materials', materialsRouter);

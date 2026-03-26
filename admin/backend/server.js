@@ -14,17 +14,19 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN;
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || '';
+const ALLOWED_ORIGINS = CLIENT_ORIGIN.split(',').map(s => s.trim()).filter(Boolean);
 
 // ─── CORS ──────────────────────────────────────────────────────
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow non-browser tools, local dev, configured frontend, and Render domains.
     if (!origin) return callback(null, true);
     if (/^http:\/\/localhost:\d+$/.test(origin)) return callback(null, true);
-    if (CLIENT_ORIGIN && origin === CLIENT_ORIGIN) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes('*') || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
     if (/^https:\/\/.+\.onrender\.com$/.test(origin)) return callback(null, true);
-    return callback(new Error('CORS blocked for origin: ' + origin));
+    if (/^https:\/\/.+\.vercel\.app$/.test(origin)) return callback(null, true);
+    console.warn('CORS blocked for origin: ' + origin);
+    return callback(null, false);
   },
   credentials: true,
 }));

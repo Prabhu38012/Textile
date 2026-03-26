@@ -11,8 +11,8 @@ if (!MONGO_URI) {
 await mongoose.connect(MONGO_URI);
 console.log('MongoDB connected');
 
-const ADMIN_EMAIL = 'poornimark.23aim@kongu.edu';
-const ADMIN_PASSWORD = 'POOR@065';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'prabhuchennimalaikd.23aim@kongu.edu';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
 
 let user = await User.findOne({ email: ADMIN_EMAIL });
 

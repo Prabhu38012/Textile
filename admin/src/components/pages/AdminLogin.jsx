@@ -6,7 +6,7 @@ import s4 from "../../assets/sigin4.jpg";
 import { Link, useNavigate } from "react-router-dom";
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-const ADMIN_EMAIL = "poornimark.23aim@kongu.edu";
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "prabhuchennimalaikd.23aim@kongu.edu";
 
 export default function AdminLogin() {
   const [slide, setSlide] = useState(0);
