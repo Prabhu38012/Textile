@@ -28,6 +28,11 @@ app.use(cors({
     // Allow non-browser tools (no origin) and allowed origins
     if (!origin) return callback(null, true);
     if (ALLOWED_ORIGINS.includes('*') || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    
+    // Auto-allow any Vercel and Render production URLs
+    if (/^https:\/\/.+\.vercel\.app$/.test(origin)) return callback(null, true);
+    if (/^https:\/\/.+\.onrender\.com$/.test(origin)) return callback(null, true);
+
     // Allow any localhost (different ports) and 127.0.0.1 for local development
     try {
       const parsed = new URL(origin);
