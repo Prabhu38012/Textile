@@ -8,6 +8,8 @@ import { fileURLToPath } from 'url';
 import authRouter from './src/routes/auth.js';
 import materialsRouter from './src/routes/materials.js';
 import uploadRouter from './src/routes/upload.js';
+import User from './src/models/User.js';
+import bcrypt from 'bcryptjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +45,35 @@ app.use('/api/upload', uploadRouter);
 
 app.get('/health', (_, res) => res.json({ ok: true, service: 'admin-backend', port: PORT }));
 app.get('/api/health', (_, res) => res.json({ ok: true, service: 'admin-backend', port: PORT }));
+
+// Temporary route to seed admin from the browser
+app.get('/api/seed-admin', async (req, res) => {
+  try {
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'prabhuchennimalaikd.23aim@kongu.edu';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
+    
+    let user = await User.findOne({ email: ADMIN_EMAIL });
+    
+    if (user) {
+      if (user.isAdmin) return res.json({ message: 'Admin user already exists and is configured.', email: ADMIN_EMAIL });
+      user.isAdmin = true;
+      user.passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      await user.save();
+      return res.json({ message: 'Updated existing user to Admin', email: ADMIN_EMAIL });
+    } else {
+      await User.create({
+        name: 'Admin',
+        email: ADMIN_EMAIL,
+        passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 10),
+        isAdmin: true,
+      });
+      return res.json({ message: 'Created new Admin user successfully', email: ADMIN_EMAIL });
+    }
+  } catch (err) {
+    console.error('Seed error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // ─── MONGO + START ─────────────────────────────────────────────
 const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
